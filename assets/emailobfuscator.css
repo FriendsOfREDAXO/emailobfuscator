@@ -1,0 +1,9 @@
+.unicorn:before {
+	content: "@";
+}
+.unicorn {
+	display: inline-block;
+	vertical-align: bottom;
+	width: 1em;
+	overflow: hidden;
+}
