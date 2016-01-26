@@ -1,4 +1,4 @@
 package: rex_emailobfuscator
-version: '1.0.1'
+version: '1.0.2'
 author: Thomas Kaegi
-supportpage: https://github.com/factorylabs/rex_emailobfuscator
+supportpage: github.com/phoebusryan/rex_emailobfuscator
