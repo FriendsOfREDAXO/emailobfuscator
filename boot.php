@@ -14,10 +14,11 @@
 		}
 		
 		function encodeEmail ($matches) {
+			if ($_SERVER['REQUEST_METHOD'] == 'POST' && in_array($matches[0], $_POST)) {
+				return $matches[0];
+			}
 			return $matches[1].'<span class="unicorn">_at_</span>'.$matches[2];
 		}
-		
-		
 		
 		rex_extension::register('OUTPUT_FILTER',function(rex_extension_point $ep) {
 			$subject = $ep->getSubject();
