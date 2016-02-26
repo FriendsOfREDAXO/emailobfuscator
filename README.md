@@ -5,7 +5,7 @@ Dieses kleine aber praktische AddOn "verschüsselt" Emailadressen im Quelltext u
 
 ##Einbindung
 
-Damit die Emailverschleierung aktiv wird, muss lediglich ein CSS- und ein JS-File eingebunden werden.
+Benötigt wird dafür ein CSS Snippet zur Darstellung und eine Javascriptfunktion zur entschlüsselung. Beide Files werden mit diesem AddOn mitgeliefert und sollten wie folgt eingebunden werden:
 
 ###CSS-File
 
@@ -30,3 +30,5 @@ Damit die Emailverschleierung aktiv wird, muss lediglich ein CSS- und ein JS-Fil
 	}
 ?>
 ```
+
+Grundsätzlich kann man die Inhalte der beiden Files auch in eigene Files kopieren jedoch müsste man die Files im Falle eines AddOn-Updates manuell anpassen.
