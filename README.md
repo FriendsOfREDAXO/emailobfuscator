@@ -31,4 +31,4 @@ Benötigt wird dafür ein CSS Snippet zur Darstellung und eine Javascriptfunktio
 ?>
 ```
 
-Grundsätzlich kann man die Inhalte der beiden Files auch in eigene Files kopieren jedoch müsste man die Files im Falle eines AddOn-Updates manuell anpassen.
+Grundsätzlich kann man die Inhalte der beiden Files auch in eigene Files kopieren, jedoch müsste man dann die Files im Falle eines AddOn-Updates manuell anpassen.
