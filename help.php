@@ -6,7 +6,7 @@
 	$css .= "<?php".PHP_EOL;
 	$css .= "  if (rex_addon::get('rex_emailobfuscator')->isAvailable()) {".PHP_EOL;
 	$css .= "    ?>".PHP_EOL;
-	$css .= "    <link rel=\"stylesheet\" type=\"text/css\" href=\"<?=rex_url::addonAssets('rex_emailobfuscator', 'emailobfuscator.css');?>\">".PHP_EOL;
+	$css .= "    <link rel=\"stylesheet\" type=\"text/css\" href=\"<?=rex_url::addonAssets('rex_emailobfuscator', 'rex_emailobfuscator.css');?>\">".PHP_EOL;
 	$css .= "    <?php".PHP_EOL;
 	$css .= "  }".PHP_EOL;
 	$css .= "?>";
@@ -18,7 +18,7 @@
 	$js .= "<?php".PHP_EOL;
 	$js .= "  if (rex_addon::get('rex_emailobfuscator')->isAvailable()) {".PHP_EOL;
 	$js .= "    ?>".PHP_EOL;
-	$js .= "    <script src=\"<?=rex_url::addonAssets('rex_emailobfuscator', 'emailobfuscator.js');?>\"></script>".PHP_EOL;
+	$js .= "    <script src=\"<?=rex_url::addonAssets('rex_emailobfuscator', 'rex_emailobfuscator.js');?>\"></script>".PHP_EOL;
 	$js .= "    <?php".PHP_EOL;
 	$js .= "  }".PHP_EOL;
 	$js .= "?>";
