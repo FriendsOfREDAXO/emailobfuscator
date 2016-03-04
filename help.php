@@ -11,7 +11,7 @@
 	$css .= "  }".PHP_EOL;
 	$css .= "?>";
 ?>
-<pre><?=highlight_string($css,true);?></pre>
+<?=rex_string::highlight($css);?>
 
 <?php
 	$js = "";
@@ -23,6 +23,6 @@
 	$js .= "  }".PHP_EOL;
 	$js .= "?>";
 ?>
-<pre><?=highlight_string($js,true);?></pre>
+<?=rex_string::highlight($js);?>
 
 <p>Grundsätzlich kann man die Inhalte der beiden Files auch in eigene Files kopieren, jedoch müsste man dann die Files im Falle eines AddOn-Updates manuell anpassen.</p>
