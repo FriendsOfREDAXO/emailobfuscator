@@ -1,4 +1,3 @@
 #subpage help
 rex_emailobfuscator_help_infotext1 = Dieses kleine aber praktische AddOn "verschüsselt" Emailadressen (als Links oder Plain) im Quelltext und "entschlüsselt" sie wieder via Javascript.
-rex_emailobfuscator_help_infotext2 = Benötigt wird dafür ein CSS Snippet zur Darstellung und eine Javascriptfunktion zur entschlüsselung. Beide Files werden mit diesem AddOn mitgeliefert und sollten wie nachfolgend eingebunden werden.
-rex_emailobfuscator_help_infotext3 = Grundsätzlich kann man die Inhalte der beiden Files auch in eigene Files kopieren, jedoch müsste man dann die Files im Falle eines AddOn-Updates manuell anpassen.
+rex_emailobfuscator_help_infotext2 = Benötigt wird dafür ein CSS Snippet zur Darstellung und eine Javascriptfunktion zur entschlüsselung. Beide Files werden mit diesem AddOn mitgeliefert und sollten wie nachfolgend eingebunden werden. Grundsätzlich kann man die Inhalte der beiden Files auch in eigene Files kopieren, jedoch müsste man dann die Files im Falle eines AddOn-Updates manuell anpassen.
