@@ -1,4 +1,4 @@
 package: rex_emailobfuscator
-version: '1.1.0'
-author: Thomas Kaegi
-supportpage: github.com/phoebusryan/rex_emailobfuscator
+version: '1.1.1'
+author: Friends Of REDAXO
+supportpage: github.com/FriendsOfREDAXO/rex_emailobfuscator
