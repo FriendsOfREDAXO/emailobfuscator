@@ -39,6 +39,7 @@
 	$code .= "<?php".PHP_EOL;
 	$code .= "  if (rex_addon::get('rex_emailobfuscator')->isAvailable()) {".PHP_EOL;
 	$code .= "    rex_emailobfuscator::whitelistEmail('email@example.com');".PHP_EOL;
+	$code .= "  }".PHP_EOL;
 	$code .= "?>";
 	
 	$fragment = new rex_fragment();
