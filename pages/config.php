@@ -3,7 +3,7 @@
 	
 	if (rex_post('config-submit', 'boolean')) {
 		$this->setConfig(rex_post('config', [
-			['articles', 'array[int]'],
+			['articles', 'string'],
 			['templates', 'array[int]'],
 		]));
 		$content .= rex_view::info($this->i18n('config_saved'));
@@ -17,15 +17,9 @@
 	
 	//Start - articles
 		$n = [];
+		$n = [];
 		$n['label'] = '<label for="rex_emailobfuscator-config-articles">'.$this->i18n('config_articles').'</label>';
-		$select = new rex_select();
-		$select->setId('rex_emailobfuscator-config-articles');
-		$select->setMultiple();
-		$select->setSize(20);
-		$select->setName('config[articles][]');
-		$select->addSqlOptions('SELECT IF(`catname` != \'\', concat(`catname`,\' > \',`name`), `name`) as `article`,`id` FROM `'.rex::getTablePrefix().'article` WHERE `clang_id` = 1 ORDER BY `article` ASC');
-		$select->setSelected($this->getConfig('articles'));
-		$n['field'] = $select->get();
+		$n['field'] = rex_var_linklist::getWidget(1, 'config[articles]', $this->getConfig('articles'));
 		$formElements[] = $n;
 	//End - articles
 	
