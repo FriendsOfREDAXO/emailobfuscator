@@ -3,12 +3,12 @@
 		
 		rex_extension::register('OUTPUT_FILTER',function(rex_extension_point $ep) {
 			$whitelistTemplates = rex_addon::get('rex_emailobfuscator')->getConfig('templates', []);
-			$whitelistArticles = rex_addon::get('rex_emailobfuscator')->getConfig('articles', []);
-			if (!empty($whitelistArticles)) {
+			$whitelistArticles = rex_addon::get('rex_emailobfuscator')->getConfig('articles', '');
+			if ($whitelistArticles != '') {
 				$whitelistArticles = explode(',', $whitelistArticles);
+			} else {
+				$whitelistArticles = [];
 			}
-			
-			
 			
 			if (!in_array(rex_article::getCurrent()->getTemplateId(), $whitelistTemplates) && !in_array(rex_article::getCurrentId(),$whitelistArticles)) {
 				$subject = $ep->getSubject();
