@@ -20,11 +20,21 @@
 			}
 		}
 		
-		public static function encodeEmail ($matches) {
-			if (($_SERVER['REQUEST_METHOD'] == 'POST' && in_array($matches[0], $_POST)) || in_array($matches[0], self::$whitelist)) {
+		public static function encodeEmail($matches) {
+			if (($_SERVER['REQUEST_METHOD'] == 'POST' && self::in_array_r($matches[0], $_POST)) || self::in_array_r($matches[0], self::$whitelist)) {
 				return $matches[0];
 			}
 			return $matches[1].'<span class="unicorn">_at_</span>'.$matches[2];
+		}
+		
+		private static function in_array_r($needle, $haystack, $strict = false) {
+			foreach ($haystack as $item) {
+				if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && self::in_array_r($needle, $item, $strict))) {
+					return true;
+				}
+			}
+			
+			return false;
 		}
 	}
 ?>
