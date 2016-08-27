@@ -1,15 +1,15 @@
 Redaxo 5 Addon - Email-Obfuscator
 =================================
 
-Dieses kleine aber praktische AddOn "verschüsselt" Emailadressen im Quelltext und "entschlüsselt" sie wieder via Javascript.
+Dieses kleine aber praktische AddOn »verschüsselt« E-Mailadressen im Quelltext und »entschlüsselt« sie wieder via Javascript.
 
-##Einbindung
+## Einbindung
 
-Benötigt wird dafür ein CSS Snippet zur Darstellung und eine Javascriptfunktion zur entschlüsselung. Beide Files werden mit diesem AddOn mitgeliefert und sollten wie folgt eingebunden werden:
+Benötigt wird dafür ein CSS Snippet zur Darstellung und eine JavaScript-Funktion zur Entschlüsselung. Beide Files werden mit diesem AddOn mitgeliefert und sollten wie folgt eingebunden werden:
 
-###CSS-File
+### CSS-File
 
-```
+```php
 <?php
 	if (rex_addon::get('rex_emailobfuscator')->isAvailable()) { 
 		?>
@@ -21,7 +21,7 @@ Benötigt wird dafür ein CSS Snippet zur Darstellung und eine Javascriptfunktio
 
 ###JS-File
 
-```
+```php
 <?php
 	if (rex_addon::get('rex_emailobfuscator')->isAvailable()) {
 		?>
