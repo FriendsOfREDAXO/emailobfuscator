@@ -1,15 +1,16 @@
 Email-Obfuscator: Verschlüsselung von E-Mailadressen zum Schutz vor Spam
-=================================
+========================================================================
 
 Das [REDAXO](http://www.redaxo.org)-Addon sorgt dafür, dass alle E-Mailadressen auf deiner Website in verschlüsselter Form ausgegeben werden, so dass sie vor Spam geschützt sind. ✌️
 
 ## Funktionsweise
 
-Das Addon findet alle E-Mailadressen und ersetzt deren `@` durch spezielles Einhorn-Markup: `<span class="unicorn"><span>_at_</span></span>`. Dadurch kann die E-Mailadresse nicht mehr so einfach von Bots ausgelesen werden und sollte damit ziemlich gut vor Spam geschützt sein.
+Das Addon findet alle E-Mailadressen und ersetzt deren `@` durch spezielles Einhorn-Markup: `<span class="unicorn"><span>_at_</span></span>`. Dadurch kann die E-Mailadresse nicht mehr so einfach von Bots ausgelesen werden und sollte ziemlich gut vor Spam geschützt sein.  
+Weiterhin werden auch alle mailto-Links erkannt und verschlüsselt.
 
-CSS-Styles sorgen dafür, dass die geschützten E-Mailadressen auf der Website wieder richtig ausgegeben werden, also mit `@` statt Einhorn.
+Beim Aufruf der Seite werden alle geschützten E-Mailadressen und mailto-Links mittels __JavaScript__ wieder entschlüsselt und in die ursprüngliche Form gebracht.
 
-Weiterhin werden alle mailto-Links erkannt und durch eine JavaScript-Funktion ersetzt, die die E-Mailadresse in verschlüsselter Form enthält. Erst per Klick wird sie wieder entschlüsselt.
+__CSS-Styles__ sorgen dafür, dass die geschützten E-Mailadressen auf der Website richtig angezeigt werden, also mit `@` statt Einhorn. Damit fällt der Wechsel von verschlüsselt nach unverschlüsselt nicht auf, und auch in Umgebungen ohne JavaScript wird eine verschlüsselte Adresse richtig dargestellt.
 
 ## Installation
 
@@ -72,11 +73,8 @@ Bei Variante a) oben ist dies nicht notwendig.
 ?>
 ```
 
+### Aufpassen bei Formularen und Attributen!
 
+Das Addon filtert _alle_ E-Mailadressen im Code anhand eines Musters und verschlüsselt diese. In manchen Situationen ist das nicht unbedingt gewollt, z. B. wenn E-Mailadressen als HTML-Attribute oder in Formularen verwendet werden. Dort werden vom System natürlich die reinen, unverschlüsselten Adressen erwartet, und leider kann das Addon solche Umgebungen nicht eigenständig erkennen.
 
-
-
-
-
-
-
+⚠️ Beachte bitte, dass du in manchen Umgebungen die E-Mailverschlüsselung unterbinden solltest, entweder durch Ausschließen bestimmter Templates oder Artikel in der Konfiguration, oder aber durch ein manuelles Whitelisting von Adressen wie im Abschnitt oben beschrieben.
