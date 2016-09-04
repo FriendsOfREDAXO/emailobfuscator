@@ -1,9 +1,22 @@
-.unicorn:before {
-	content: "@";
+span.unicorn:before {
+    content: "@";
 }
-.unicorn {
-	display: inline-block;
-	vertical-align: bottom;
-	width: 1em;
-	overflow: hidden;
+
+span.unicorn > span {
+    /*
+     * Hide only visually, but have it available for screen readers:
+     * https://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+     *
+     * Beachten: Diese Art des Ausblendens ermöglicht ein Copy & Paste von
+     * E-Mailadressen. Bei anderen Varianten, etwa display: none, ist dies
+     * nicht mehr möglich!
+     */
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
 }
