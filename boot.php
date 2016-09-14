@@ -2,6 +2,9 @@
 if (!rex::isBackend()) {
 
     rex_extension::register('OUTPUT_FILTER', function (rex_extension_point $ep) {
+
+        // Bereite Ausnahmen vor: Templates und Artikel
+        // Dort werden E-Mailadressen nicht verschlüsselt
         $whitelistTemplates = rex_addon::get('emailobfuscator')->getConfig('templates', []);
         $whitelistArticles = rex_addon::get('emailobfuscator')->getConfig('articles', '');
         if ($whitelistArticles != '') {
@@ -10,7 +13,9 @@ if (!rex::isBackend()) {
             $whitelistArticles = [];
         }
 
-        if (!in_array(rex_article::getCurrent()->getTemplateId(), $whitelistTemplates) && !in_array(rex_article::getCurrentId(), $whitelistArticles)) {
+        if (!in_array(rex_article::getCurrent()->getTemplateId(), $whitelistTemplates)
+            && !in_array(rex_article::getCurrentId(), $whitelistArticles)
+        ) {
             $subject = $ep->getSubject();
 
             // Ersetze mailto-Links (zuerst!)

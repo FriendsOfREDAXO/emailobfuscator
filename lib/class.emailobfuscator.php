@@ -13,7 +13,8 @@ class emailobfuscator
     {
         $mail = $matches[1];
         $mail = str_rot13($mail); // ROT13-Transformation
-        $mail = str_replace('@', '#', $mail); // Ersetze @ durch #, um E-Mailadressen von weiteren RegEx auszuschlie�en
+        $mail = str_replace('@', '#', $mail); // Ersetze @ durch #, um E-Mailadressen von weiteren RegEx auszuschließen
+
         return 'javascript:decryptUnicorn(' . $mail . ')';
     }
 
@@ -22,7 +23,6 @@ class emailobfuscator
         if (($_SERVER['REQUEST_METHOD'] == 'POST' && self::in_array_r($matches[0], $_POST)) || self::in_array_r($matches[0], self::$whitelist)) {
             return $matches[0];
         }
-
         return $matches[1] . '<span class=unicorn><span>_at_</span></span>' . $matches[2];
     }
 
@@ -33,7 +33,6 @@ class emailobfuscator
                 return true;
             }
         }
-
         return false;
     }
 }

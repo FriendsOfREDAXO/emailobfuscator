@@ -1,5 +1,6 @@
 if (typeof jQuery !== 'undefined') {
     $(function () {
+
         // Ersetze E-Mailadressen
         $('span.unicorn').each(function () {
             $(this).replaceWith('@');
@@ -7,6 +8,7 @@ if (typeof jQuery !== 'undefined') {
 
         // Ersetze mailto-Links
         $('a[href^="javascript:decryptUnicorn"]').each(function () {
+
             // Selektiere Einhorn-Werte
             var emails = $(this).attr('href').match(/\((.*)\)/)[1];
 
@@ -22,6 +24,7 @@ if (typeof jQuery !== 'undefined') {
             $(this).attr('href', 'mailto:' + emails);
         });
     });
-} else {
+}
+else {
     console.warn('Email obfuscator addon requires jQuery.');
 }
