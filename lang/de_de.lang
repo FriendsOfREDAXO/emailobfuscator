@@ -1,13 +1,12 @@
 emailobfuscator_title = Email-Verschlüsselung
 
 emailobfuscator_config = Konfiguration
-emailobfuscator_config_action_save = Speichern
 emailobfuscator_config_saved = Konfiguration gespeichert.
 emailobfuscator_config_assets = Assets
-emailobfuscator_config_autoload_assets = Scripte und Styles laden
-emailobfuscator_config_autoload_js = JavaScript automatisch laden
-emailobfuscator_config_autoload_css = CSS automatisch laden
-emailobfuscator_config_autoload_note = Assets können manuell im Template eingebunden werden, falls dies nicht automatisch passieren soll. Zudem ist es auch möglich, die mitgelieferten Styles und Scripte des Addons in deine bereits vorhandene Sourcen einzubetten, dann aber müssen sie im Fall eines Addon-Updates von dir nachträglich angepasst werden.<br>Ausführliche Informationen und Code-Beispiele findest du auf der <a href="{0}">Hilfeseite des Addons</a>.
+emailobfuscator_config_load_assets = Scripte und Styles laden
+emailobfuscator_config_assets_js = JavaScript automatisch laden
+emailobfuscator_config_assets_css = CSS automatisch laden
+emailobfuscator_config_assets_note = Assets können manuell im Template eingebunden werden, falls dies nicht automatisch passieren soll. Zudem ist es auch möglich, die mitgelieferten Styles und Scripte des Addons in deine bereits vorhandene Sourcen einzubetten, dann aber müssen sie im Fall eines Addon-Updates von dir nachträglich angepasst werden.<br>Ausführliche Informationen und Code-Beispiele findest du auf der <a href="{0}">Hilfeseite des Addons</a>.
 emailobfuscator_config_whitelist = Ausnahmen
 emailobfuscator_config_articles = Artikel ausschließen
 emailobfuscator_config_templates = Templates ausschließen
