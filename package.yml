@@ -1,7 +1,7 @@
 package: rex_emailobfuscator
 version: '1.5.0-dev'
 author: Friends Of REDAXO
-supportpage: github.com/FriendsOfREDAXO/rex_emailobfuscator
+supportpage: github.com/FriendsOfREDAXO/emailobfuscator
 
 page:
     title: 'translate:title'
