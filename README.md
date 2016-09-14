@@ -30,9 +30,9 @@ __CSS__ im `<head>` deiner Website einfügen:
 
 ```php
 <?php
-	if (rex_addon::get('rex_emailobfuscator')->isAvailable()) { 
+	if (rex_addon::get('emailobfuscator')->isAvailable()) { 
 		?>
-		<link rel="stylesheet" type="text/css" href="<?= rex_url::addonAssets('rex_emailobfuscator', 'rex_emailobfuscator.css'); ?>">
+		<link rel="stylesheet" type="text/css" href="<?= rex_url::addonAssets('emailobfuscator', 'emailobfuscator.css'); ?>">
 		<?php
 	}
 ?>
@@ -42,9 +42,9 @@ __JavaScript__ am besten am Ende deiner Website vorm schließenden `</body>` ein
 
 ```php
 <?php
-	if (rex_addon::get('rex_emailobfuscator')->isAvailable()) {
+	if (rex_addon::get('emailobfuscator')->isAvailable()) {
 		?>
-		<script src="<?= rex_url::addonAssets('rex_emailobfuscator', 'rex_emailobfuscator.js'); ?>"></script>
+		<script src="<?= rex_url::addonAssets('emailobfuscator', 'emailobfuscator.js'); ?>"></script>
 		<?php
 	}
 ?>
@@ -54,8 +54,8 @@ __JavaScript__ am besten am Ende deiner Website vorm schließenden `</body>` ein
 
 Kopiere die Inhalte der CSS-Datei und der JS-Datei jeweils in deine Sourcen:
 
-    assets/rex_emailobfuscator.css
-    assets/rex_emailobfuscator.js
+    assets/emailobfuscator.css
+    assets/emailobfuscator.js
 
 ⚠️ Beachte dabei: Sollte eine neue Version des Addons erscheinen, in der das CSS oder JS geändert wurden, musst du diese Änderungen in deinen Sourcen anpassen!  
 Bei Variante a) oben ist dies nicht notwendig.
@@ -67,8 +67,8 @@ Bei Variante a) oben ist dies nicht notwendig.
 
 ```php
 <?php
-  if (rex_addon::get('rex_emailobfuscator')->isAvailable()) {
-    rex_emailobfuscator::whitelistEmail('email@example.com');
+  if (rex_addon::get('emailobfuscator')->isAvailable()) {
+    emailobfuscator::whitelistEmail('email@example.com');
   }
 ?>
 ```

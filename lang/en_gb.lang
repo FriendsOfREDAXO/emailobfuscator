@@ -1,13 +1,13 @@
-rex_emailobfuscator_title = Email obfuscation
+emailobfuscator_title = Email obfuscation
 
-rex_emailobfuscator_config = Configuration
-rex_emailobfuscator_config_action_save = Save
-rex_emailobfuscator_config_saved = Configuration has been saved.
-rex_emailobfuscator_config_assets = Assets
-rex_emailobfuscator_config_autoload_assets = Load scripts and styles
-rex_emailobfuscator_config_autoload_js = Autoload JavaScript
-rex_emailobfuscator_config_autoload_css = Autoload CSS
-rex_emailobfuscator_config_autoload_note = In case you do not want assets to autoload, you can include them in your template. You can also embed the styles and scripts provided by the addon into your existing sources, but keep in mind to update them in case a new addon release comes with new assets.<br>Find detailed information and code snippets in the <a href="{0}">addon README</a>.
-rex_emailobfuscator_config_whitelist = Whitelist
-rex_emailobfuscator_config_articles = Whitelist articles
-rex_emailobfuscator_config_templates = Whitelist templates
+emailobfuscator_config = Configuration
+emailobfuscator_config_action_save = Save
+emailobfuscator_config_saved = Configuration has been saved.
+emailobfuscator_config_assets = Assets
+emailobfuscator_config_autoload_assets = Load scripts and styles
+emailobfuscator_config_autoload_js = Autoload JavaScript
+emailobfuscator_config_autoload_css = Autoload CSS
+emailobfuscator_config_autoload_note = In case you do not want assets to autoload, you can include them in your template. You can also embed the styles and scripts provided by the addon into your existing sources, but keep in mind to update them in case a new addon release comes with new assets.<br>Find detailed information and code snippets in the <a href="{0}">addon README</a>.
+emailobfuscator_config_whitelist = Whitelist
+emailobfuscator_config_articles = Whitelist articles
+emailobfuscator_config_templates = Whitelist templates

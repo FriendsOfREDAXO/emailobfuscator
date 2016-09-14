@@ -1,12 +1,12 @@
-package: rex_emailobfuscator
+package: emailobfuscator
 version: '2.0.0-dev'
 author: Friends Of REDAXO
-supportpage: github.com/FriendsOfREDAXO/rex_emailobfuscator
+supportpage: github.com/FriendsOfREDAXO/emailobfuscator
 
 page:
     title: 'translate:title'
-    perm: rex_emailobfuscator[]
+    perm: emailobfuscator[]
     pjax: true
     icon: rex-icon fa-lock
     subpages:
-        config: { title: 'translate:config', perm: rex_emailobfuscator[config] }
+        config: { title: 'translate:config', perm: emailobfuscator[config] }
