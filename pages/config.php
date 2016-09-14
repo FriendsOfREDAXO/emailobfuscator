@@ -3,6 +3,8 @@
 	
 	if (rex_post('config-submit', 'boolean')) {
 		$this->setConfig(rex_post('config', [
+			['autoload_css', 'bool'],
+			['autoload_js', 'bool'],
 			['articles', 'string'],
 			['templates', 'array[int]'],
 		]));
@@ -14,6 +16,33 @@
 	$content .= '    <fieldset>';
 	
 	$formElements = [];
+	
+	//Start - autoload_css
+		$n = [];
+		$n['label'] = '<label for="rex_emailobfuscator-config-autoload_css">'.$this->i18n('config_autoload_css').'</label>';
+		$n['field'] = '<input type="checkbox" id="rex_emailobfuscator-config-autoload_css" name="config[autoload_css]" value="1" '.($this->getConfig('autoload_css') ? ' checked="checked"' : '').'>';
+		$formElements[] = $n;
+	//End - autoload_css
+	
+	//Start - autoload_js
+		$n = [];
+		$n['label'] = '<label for="rex_emailobfuscator-config-autoload_js">'.$this->i18n('config_autoload_js').'</label>';
+		$n['field'] = '<input type="checkbox" id="rex_emailobfuscator-config-autoload_js" name="config[autoload_js]" value="1" '.($this->getConfig('autoload_js') ? ' checked="checked"' : '').'>';
+		$formElements[] = $n;
+	//End - autoload_js
+	
+	$fragment = new rex_fragment();
+	$fragment->setVar('elements', $formElements, false);
+	$assets = $fragment->parse('core/form/checkbox.php');
+	$formElements = [];
+	
+	//Start - autoload_note
+		$n = [];
+		$n['label'] = $this->i18n('config_autoload_assets');
+		$n['field'] = $assets;
+		$n['note'] = rex_i18n::rawMsg('rex_emailobfuscator_config_autoload_note', rex_url::backendPage('packages', ['subpage' => 'help', 'package' => $this->getPackageId()]));
+		$formElements[] = $n;
+	//End - autoload_note
 	
 	//Start - articles
 		$n = [];

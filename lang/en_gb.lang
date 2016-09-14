@@ -1,12 +1,13 @@
-rex_emailobfuscator_title = Emailobfuscation
+rex_emailobfuscator_title = Email obfuscation
 
-#subpage config
 rex_emailobfuscator_config = Configuration
 rex_emailobfuscator_config_action_save = Save
-rex_emailobfuscator_config_articles = Exclude articles
-rex_emailobfuscator_config_templates = Exclude templates
-rex_emailobfuscator_config_saved = Settings successfully saved!
-
-#subpage help
-rex_emailobfuscator_help_infotext1 = Dieses kleine aber praktische AddOn "verschüsselt" Emailadressen (als Links oder Plain) im Quelltext und "entschlüsselt" sie wieder via Javascript.
-rex_emailobfuscator_help_infotext2 = Benötigt wird dafür ein CSS Snippet zur Darstellung und eine Javascriptfunktion zur entschlüsselung. Beide Files werden mit diesem AddOn mitgeliefert und sollten wie nachfolgend eingebunden werden. Grundsätzlich kann man die Inhalte der beiden Files auch in eigene Files kopieren, jedoch müsste man dann die Files im Falle eines AddOn-Updates manuell anpassen.
+rex_emailobfuscator_config_saved = Configuration has been saved.
+rex_emailobfuscator_config_assets = Assets
+rex_emailobfuscator_config_autoload_assets = Load scripts and styles
+rex_emailobfuscator_config_autoload_js = Autoload JavaScript
+rex_emailobfuscator_config_autoload_css = Autoload CSS
+rex_emailobfuscator_config_autoload_note = In case you do not want assets to autoload, you can include them in your template. You can also embed the styles and scripts provided by the addon into your existing sources, but keep in mind to update them in case a new addon release comes with new assets.<br>Find detailed information and code snippets in the <a href="{0}">addon README</a>.
+rex_emailobfuscator_config_whitelist = Whitelist
+rex_emailobfuscator_config_articles = Whitelist articles
+rex_emailobfuscator_config_templates = Whitelist templates
