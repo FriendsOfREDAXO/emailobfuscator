@@ -11,7 +11,7 @@
 				$whitelistArticles = [];
 			}
 			
-			if (!in_array(rex_article::getCurrent()->getTemplateId(), $whitelistTemplates) && !in_array(rex_article::getCurrentId(), $whitelistArticles)) {
+			if (!is_null(rex_article::getCurrent()) && !in_array(rex_article::getCurrent()->getTemplateId(), $whitelistTemplates) && !in_array(rex_article::getCurrentId(), $whitelistArticles)) {
 				$subject = $ep->getSubject();
 				
 				// Ersetze mailto-Links (zuerst!)
