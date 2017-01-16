@@ -10,3 +10,4 @@ emailobfuscator_config_assets_note = In case you do not want assets to autoload,
 emailobfuscator_config_whitelist = Whitelist
 emailobfuscator_config_articles = Whitelist articles
 emailobfuscator_config_templates = Whitelist templates
+emailobfuscator_config_mailto_only = Only emailadresses with 'mailto:'

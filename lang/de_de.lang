@@ -10,3 +10,4 @@ emailobfuscator_config_assets_note = Assets können manuell im Template eingebun
 emailobfuscator_config_whitelist = Ausnahmen
 emailobfuscator_config_articles = Artikel ausschließen
 emailobfuscator_config_templates = Templates ausschließen
+emailobfuscator_config_mailto_only = Nur Emailadressen mit 'mailto:'
