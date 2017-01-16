@@ -14,7 +14,8 @@ if ($func == 'update') {
         ['autoload_css', 'bool'],
         ['autoload_js', 'bool'],
         ['articles', 'string'],
-        ['templates', 'array[int]']
+        ['templates', 'array[int]'],
+        ['mailto_only', 'bool'],
     ]));
 
     echo rex_view::success($this->i18n('config_saved'));
@@ -79,6 +80,11 @@ $select->setName('config[templates][]');
 $select->addSqlOptions('SELECT `name`, `id` FROM `' . rex::getTablePrefix() . 'template` ORDER BY `name` ASC');
 $select->setSelected($this->getConfig('templates'));
 $n['field'] = $select->get();
+$formElements[] = $n;
+
+$n = [];
+$n['label'] = '<label for="mailto_only">' . $this->i18n('config_mailto_only') . '</label>';
+$n['field'] = '<input type="checkbox" id="mailto_only" name="config[mailto_only]" value="1" ' . ($this->getConfig('mailto_only') ? ' checked="checked"' : '') . '>';
 $formElements[] = $n;
 
 $fragment = new rex_fragment();
