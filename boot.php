@@ -20,7 +20,9 @@
 				$subject = preg_replace_callback('/mailto:(.*?)(?=[\'|"|\>])/', 'emailobfuscator::encodeEmailLinks', $subject);
 				
 				// Ersetze E-Mailadressen
-				$subject = preg_replace_callback('/([\w\-\+\.]+)@([\w\-\.]+\.[\w]{2,})/', 'emailobfuscator::encodeEmail', $subject);
+				if (!$this->getConfig('mailto_only')) {
+					$subject = preg_replace_callback('/([\w\-\+\.]+)@([\w\-\.]+\.[\w]{2,})/', 'emailobfuscator::encodeEmail', $subject);
+				}
 				
 				// Injiziere CSS vors schließende </head> im Seitenkopf
 				if ($this->getConfig('autoload_css')) {
@@ -36,6 +38,6 @@
 				
 				$ep->setSubject($subject);
 			}
-		});
+		}, rex_extension::LATE);
 	}
 ?>
