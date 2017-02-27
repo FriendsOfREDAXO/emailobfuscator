@@ -1,4 +1,4 @@
-emailobfuscator_title = Email obfuscation
+emailobfuscator_title = E-mail obfuscation
 
 emailobfuscator_config = Configuration
 emailobfuscator_config_saved = Configuration has been saved.
@@ -6,8 +6,8 @@ emailobfuscator_config_assets = Assets
 emailobfuscator_config_load_assets = Load scripts and styles
 emailobfuscator_config_assets_js = Autoload JavaScript
 emailobfuscator_config_assets_css = Autoload CSS
-emailobfuscator_config_assets_note = In case you do not want assets to autoload, you can include them in your template. You can also embed the styles and scripts provided by the addon into your existing sources, but keep in mind to update them in case a new addon release comes with new assets.<br>Find detailed information and code snippets in the <a href="{0}">addon README</a>.
+emailobfuscator_config_assets_note = In case you do not want assets to autoload, you can include them in your template. You can also embed the styles and scripts provided by the addon into your existing sources, but don't forget to update them in case the AddOn is updated with new assets.<br>Find detailed information and code snippets in the <a href="{0}">AddOn README</a>.
 emailobfuscator_config_whitelist = Whitelist
 emailobfuscator_config_articles = Whitelist articles
 emailobfuscator_config_templates = Whitelist templates
-emailobfuscator_config_mailto_only = Only emailadresses with 'mailto:'
+emailobfuscator_config_mailto_only = Only e-mail adresses with 'mailto:'
