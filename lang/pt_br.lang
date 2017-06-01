@@ -1,0 +1,13 @@
+emailobfuscator_title = Criptografia de email
+
+emailobfuscator_config = Configuração
+emailobfuscator_config_saved = A configuração foi salva
+emailobfuscator_config_assets = Assets
+emailobfuscator_config_load_assets = Carregar scripts e estilos
+emailobfuscator_config_assets_js = Carregar JavaScript automaticamente JavaScript
+emailobfuscator_config_assets_css = Carregar CSS automaticamente
+emailobfuscator_config_assets_note = Caso você não queira carregar os Assets automaticamente, você pode incluí-los em seu template. Você também pode incorporar os estilos e scripts fornecidos pelo addon em suas fontes existentes, mas não se esqueça de atualizá-los caso o AddOn seja atualizado com novos recursos.<br>Encontre informações detalhadas e fragmentos de códigos no <a href="{0}">AddOn README</a>.
+emailobfuscator_config_whitelist = Exceções
+emailobfuscator_config_articles = Excluir produtos
+emailobfuscator_config_templates = Excluir templates
+emailobfuscator_config_mailto_only = Apenas endereços de e-mail com 'mailto:'
