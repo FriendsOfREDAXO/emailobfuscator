@@ -1,0 +1,13 @@
+emailobfuscator_title = E-post kryptering
+
+emailobfuscator_config = Konfiguration
+emailobfuscator_config_saved = Konfiguration har sparats
+emailobfuscator_config_assets = Assets
+emailobfuscator_config_load_assets = Ladda skripts och stilar
+emailobfuscator_config_assets_js = Ladda JavaScript automatisk
+emailobfuscator_config_assets_css = Ladda CSS automatisk
+emailobfuscator_config_assets_note = Om du inte vill att assets ska laddas automatisk kan du inkludera dem i din mall. Du kan också bädda in de stilar och skript som tillhandahålls av tillägget i dina befintliga källor, men glöm inte att uppdatera dem om AddOn uppdateras med nya assets. <br> Hitta detaljerad information och kodutdrag i <a href = "{0}"> AddOn README </a>.
+emailobfuscator_config_whitelist = Undantag
+emailobfuscator_config_articles = Utesluta artiklar
+emailobfuscator_config_templates = Utesluta mallar
+emailobfuscator_config_mailto_only = Bara e-postadresser med 'mailto:'
