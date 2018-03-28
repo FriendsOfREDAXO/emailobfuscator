@@ -13,7 +13,7 @@ class emailobfuscator
     {
         $mail = $matches[1];
         $mail = str_rot13($mail); // ROT13-Transformation
-        $mail = str_replace('@', '#', $mail); // Ersetze @ durch #, um E-Mailadressen von weiteren RegEx auszuschließen
+        $mail = str_replace('@', '|', $mail); // Ersetze @ durch |, um E-Mailadressen von weiteren RegEx auszuschließen
 
         return 'javascript:decryptUnicorn(' . $mail . ')';
     }
