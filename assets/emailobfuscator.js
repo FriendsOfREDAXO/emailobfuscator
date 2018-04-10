@@ -23,8 +23,8 @@ function decryptEmailaddresses() {
 			.replace(/[a-z]/gi, function (s) {
 				return String.fromCharCode(s.charCodeAt(0) + (s.toLowerCase() < 'n' ? 13 : -13))
 			})
-			// Ersetze | durch @
-			.replace(/\|/g, '@');
+			// Ersetze # durch @
+			.replace(/\#/g, '@');
 		
 		// Ersetze Einhörner
 		$(this).attr('href', 'mailto:' + emails);
