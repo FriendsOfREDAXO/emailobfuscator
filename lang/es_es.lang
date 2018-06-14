@@ -1,0 +1,13 @@
+emailobfuscator_title = E-mail ofuscación
+
+emailobfuscator_config = Ajustes
+emailobfuscator_config_saved = Configuración guardada
+emailobfuscator_config_assets = Recursos
+emailobfuscator_config_load_assets = Cargue scripts y estilos
+emailobfuscator_config_assets_js = Carga automáticamente JavaScript
+emailobfuscator_config_assets_css = Carga automáticamente CSS
+emailobfuscator_config_assets_note = Los recursos se pueden incluir manualmente en la plantilla si esto no se va a realizar automáticamente. También puede incrustar los estilos y scripts provistos por el complemento en sus fuentes existentes, pero no olvide actualizarlos en caso de que el AddOn se actualice con nuevos recursos. <br>Encuentre información detallada y fragmentos de código en <a href="{0}">AddOn README</a>.
+emailobfuscator_config_whitelist = Excepciones
+emailobfuscator_config_articles = Excluir artículos
+emailobfuscator_config_templates = Excluir plantillas
+emailobfuscator_config_mailto_only = Solo direcciones de e-mail con 'mailto:'
