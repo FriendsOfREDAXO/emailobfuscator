@@ -30,11 +30,11 @@ __CSS__ im `<head>` deiner Website einfügen:
 
 ```php
 <?php
-	if (rex_addon::get('emailobfuscator')->isAvailable()) { 
-		?>
-		<link rel="stylesheet" type="text/css" href="<?= rex_url::addonAssets('emailobfuscator', 'emailobfuscator.css'); ?>">
-		<?php
-	}
+  if (rex_addon::get('emailobfuscator')->isAvailable()) { 
+    ?>
+    <link rel="stylesheet" type="text/css" href="<?= rex_url::addonAssets('emailobfuscator', 'emailobfuscator.css'); ?>">
+    <?php
+  }
 ?>
 ```
 
@@ -42,11 +42,11 @@ __JavaScript__ am besten am Ende deiner Website vorm schließenden `</body>` ein
 
 ```php
 <?php
-	if (rex_addon::get('emailobfuscator')->isAvailable()) {
-		?>
-		<script src="<?= rex_url::addonAssets('emailobfuscator', 'emailobfuscator.js'); ?>"></script>
-		<?php
-	}
+  if (rex_addon::get('emailobfuscator')->isAvailable()) {
+    ?>
+    <script src="<?= rex_url::addonAssets('emailobfuscator', 'emailobfuscator.js'); ?>"></script>
+    <?php
+  }
 ?>
 ```
 
