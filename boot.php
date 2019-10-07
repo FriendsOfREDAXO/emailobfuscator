@@ -17,7 +17,7 @@
 				// Ersetze mailto-Links (zuerst!)
 				// Anmerkung: Attributwerte (hier: href) benötigen nicht zwingend Anführungsstriche drumrum,
 				// deshalb prüfen wir zusätzlich noch auf '>' am Ende .
-				$subject = preg_replace_callback('/mailto:(.*?)(?=[\'|"|\>])/', 'emailobfuscator::encodeEmailLinks', $subject);
+				$subject = preg_replace_callback('/mailto:(.*?)(?=[\'\"\>])/', 'emailobfuscator::encodeEmailLinks', $subject);
 				
 				// Ersetze E-Mailadressen
 				if (!$this->getConfig('mailto_only')) {
