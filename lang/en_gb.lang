@@ -2,6 +2,12 @@ emailobfuscator_title = E-mail obfuscation
 
 emailobfuscator_config = Configuration
 emailobfuscator_config_saved = Configuration has been saved.
+emailobfuscator_config_methods = Methods
+emailobfuscator_config_select_method = Protection method
+emailobfuscator_config_select_method_css = CSS method without JavaScript (removes link and transforms address into name[at]domain.tld)
+emailobfuscator_config_select_method_rot13 = ROT13 JavaScript encryption
+emailobfuscator_config_select_method_rot13_css = ROT13 JavaScript encryption with CSS method as fallback, in case JavaScript is deactivated
+emailobfuscator_config_select_method_unicorn = ROT Unicorn-Markup (standard, needs JQuery) 
 emailobfuscator_config_assets = Assets
 emailobfuscator_config_load_assets = Load scripts and styles
 emailobfuscator_config_assets_js = Autoload JavaScript
