@@ -9,17 +9,17 @@ Durch die Integration des email_obfuscator Addons von RexDude stehen verschieden
 
 1. __ROT13 Einhorn-Markup__: Diese Methode findet alle E-Mailadressen und ersetzt deren `@` durch spezielles Einhorn-Markup: `<span class="unicorn"><span>_at_</span></span>`. Dadurch kann die E-Mailadresse nicht mehr so einfach von Bots ausgelesen werden und sollte ziemlich gut vor Spam geschützt sein. Weiterhin werden auch alle mailto-Links erkannt und verschlüsselt.
 Beim Aufruf der Seite werden alle geschützten E-Mailadressen und mailto-Links mittels __JavaScript__ wieder entschlüsselt und in die ursprüngliche Form gebracht. __CSS-Styles__ sorgen dafür, dass die geschützten E-Mailadressen auf der Website richtig angezeigt werden, also mit `@` statt Einhorn. Damit fällt der Wechsel von verschlüsselt nach unverschlüsselt nicht auf, und auch in Umgebungen ohne JavaScript wird eine verschlüsselte Adresse richtig dargestellt.
-⚠️ Bitte beachten: Diese Methode benötigt für die Einhorn-Markup Methode __jQuery__ für die JavaScript-Funktionalität!
+__Bitte beachten__: Diese Methode benötigt für die Einhorn-Markup Methode __jQuery__ für die JavaScript-Funktionalität!
 
 2. __ROT13 JavaScript Verschlüsselung__: Um die Email-Adressen zu schützen, wird die E-Mailadresse durch ein JavaScript ersetzt, das die E-Mailadresse ins Dokument schreibt. Zur Verschleierung wird die Technik "ROT13 Encryption" angewendet.
-⚠️ Bitte beachten: Diese Methode macht alle E-Mailadresse ohne klickbaren Link klickbar!
+__Bitte beachten__: Diese Methode macht alle E-Mailadresse ohne klickbaren Link klickbar!
 
 3. __CSS Methode ohne JavaScript__: Um die Email-Adressen zu schützen, wird die Technik "CSS display:none" angewendet. 
-⚠️ Bitte beachten: diese Methode entfernt den mailto-Link und verwandelt Adresse in name[at]domain.tld. Die Adresse ist damit nicht mehr klickbar.
+__Bitte beachten__: diese Methode entfernt den mailto-Link und verwandelt Adresse in name[at]domain.tld. Die Adresse ist damit nicht mehr klickbar.
 
 4. __ROT13 JavaScript Verschlüsselung mit CSS Methode__: Um die Email-Adressen zu schützen, werden die Techniken "CSS display:none" und "ROT13 Encryption" angewendet. Die CSS Methode kommt im `<noscript>` Tag zum Einsatz, falls JavaScript im Browser des Besuchers deaktiviert ist.
-⚠️ Bitte beachten: Diese Methode macht alle E-Mailadresse ohne klickbaren Link klickbar!
-⚠️ Bitte beachten: diese Methode entfernt bei deaktiviertem JavaScript den mailto-Link und verwandelt Adresse in name[at]domain.tld. Die Adresse ist damit nicht mehr klickbar.
+__Bitte beachten__: Diese Methode macht alle E-Mailadresse ohne klickbaren Link klickbar!
+__Bitte beachten__: diese Methode entfernt bei deaktiviertem JavaScript den mailto-Link und verwandelt Adresse in name[at]domain.tld. Die Adresse ist damit nicht mehr klickbar.
 
 ## Installation
 
