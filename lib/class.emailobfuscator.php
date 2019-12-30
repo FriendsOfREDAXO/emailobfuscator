@@ -98,7 +98,7 @@ class emailobfuscator {
 		if ($method == 'rot13_javascript' || $method == 'rot13_javascript_css') {
 			// javascript version
 			$encoded_mail_tag = str_rot13('<a ' . $attributesBeforeHref . 'href=\\"mailto:' . $email . '\\"' . $attributesAfterHref . '>' . $text . '</a>');
-			$encoded = "<script type=\"text/javascript\">";
+			$encoded = "<script>";
 			$encoded .= "/* <![CDATA[ */";
 			$encoded .= "document.write(\"" . $encoded_mail_tag . "\".replace(/[a-zA-Z]/g, function(c){return String.fromCharCode((c<=\"Z\"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26);}));";
 			$encoded .= "/* ]]> */";
