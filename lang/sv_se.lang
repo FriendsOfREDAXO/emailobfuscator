@@ -2,6 +2,13 @@ emailobfuscator_title = E-post kryptering
 
 emailobfuscator_config = Konfiguration
 emailobfuscator_config_saved = Konfiguration har sparats
+emailobfuscator_config_methods = Metoder
+emailobfuscator_config_select_method = Krypteringsmetod
+emailobfuscator_config_select_method_css = CSS-metod utan JavaScript (tar bort länken och konverterar adress till namn [at] domain.tld)
+emailobfuscator_config_select_method_rot13 = ROT13 JavaScript-kryptering
+emailobfuscator_config_select_method_rot13_css = ROT13 JavaScript-kryptering med CSS-metod om JavaScript är inaktiverat
+emailobfuscator_config_select_method_unicorn = ROT13 Unicorn-Markup (Standard, kräver JQuery)
+emailobfuscator-config-method
 emailobfuscator_config_assets = Assets
 emailobfuscator_config_load_assets = Ladda skripts och stilar
 emailobfuscator_config_assets_js = Ladda JavaScript automatisk
