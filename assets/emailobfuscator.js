@@ -1,10 +1,12 @@
-if (typeof jQuery !== 'undefined') {
-	$(function () {
-		decryptEmailaddresses();
-	});
-} else {
-	console.warn('Email obfuscator addon requires jQuery.');
-}
+window.onload = function () {
+	if (typeof jQuery !== 'undefined') {
+		$(function () {
+			decryptEmailaddresses();
+		});
+	} else {
+		console.warn('Email obfuscator addon requires jQuery.');
+	}
+};
 
 function decryptEmailaddresses() {
 	// Ersetze E-Mailadressen
@@ -21,7 +23,7 @@ function decryptEmailaddresses() {
 		emails = emails
 			// ROT13-Transformation
 			.replace(/[a-z]/gi, function (s) {
-				return String.fromCharCode(s.charCodeAt(0) + (s.toLowerCase() < 'n' ? 13 : -13))
+				return String.fromCharCode(s.charCodeAt(0) + (s.toLowerCase() < 'n' ? 13 : -13));
 			})
 			// Ersetze # durch @
 			.replace(/\|/g, '@');
