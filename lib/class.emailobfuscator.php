@@ -155,7 +155,7 @@ class emailobfuscator {
 		if (($_SERVER['REQUEST_METHOD'] == 'POST' && self::in_array_r($matches[0], $_POST)) || self::in_array_r($matches[0], self::$whitelist)) {
             return $matches[0];
         }
-        return $matches[1] . '<span class=unicorn><span>_at_</span></span>' . $matches[2];
+        return $matches[1] . '<span class="unicorn"><span>_at_</span></span>' . $matches[2];
     }
 
     private static function in_array_r($needle, $haystack, $strict = false) {
