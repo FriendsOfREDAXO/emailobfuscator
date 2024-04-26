@@ -10,4 +10,4 @@ page:
     icon: rex-icon fa-lock
     subpages:
         config: { title: 'translate:config', perm: emailobfuscator[config] }
-        help: { title: 'translate:credits_help', icon: rex-icon rex-icon-help, itemclass: pull-right, perm: emailobfuscator[config] }
+        help: { title: 'translate:credits_help', icon: rex-icon rex-icon-help, itemClass: pull-right, perm: emailobfuscator[config] }
