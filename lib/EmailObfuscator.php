@@ -1,6 +1,11 @@
 <?php
 
-class emailobfuscator {
+namespace FriendsOfRedaxo\EmailObfuscator;
+
+use rex_addon;
+use rex_config;
+
+class EmailObfuscator {
 	/**
 	 * @var string[] Array with whitelisted email addresses  
 	 */

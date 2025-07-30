@@ -1,4 +1,7 @@
 <?php
+
+use FriendsOfRedaxo\EmailObfuscator\EmailObfuscator;
+
 if (!rex::isBackend()) {
 	rex_extension::register('OUTPUT_FILTER', function ($ep) {
 		$content = $ep->getSubject();
@@ -10,7 +13,7 @@ if (!rex::isBackend()) {
 		$whitelistArticles = preg_grep('/^\s*$/s', explode(",", $emailobfuscator->getConfig('articles', '')), PREG_GREP_INVERT);
 
 		if (!is_null(rex_article::getCurrent()) && !in_array(rex_article::getCurrent()->getTemplateId(), $whitelistTemplates) && !in_array(rex_article::getCurrentId(), $whitelistArticles)) {
-			return emailobfuscator::obfuscate($content);
+			return EmailObfuscator::obfuscate($content);
 		}
 		
 		return $content;
