@@ -39,7 +39,7 @@ class EmailObfuscator {
 
 			// Injiziere JavaScript vors schließende </body> der Seite
 			if ($emailobfuscator->getConfig('autoload_js')) {
-				$jsFile = '<script src="' . $emailobfuscator->getAssetsUrl('emailobfuscator.js?v=' . $emailobfuscator->getVersion()) . '"></script>';
+				$jsFile = '<script defer src="' . $emailobfuscator->getAssetsUrl('emailobfuscator.js?v=' . $emailobfuscator->getVersion()) . '"></script>';
 				$content = str_replace('</body>', $jsFile . '</body>', $content);
 			}
 		}
