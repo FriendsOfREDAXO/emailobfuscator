@@ -273,7 +273,7 @@ class EmailObfuscator {
 				$hash = $hash & 0xFFFFFFFF; // Keep as 32-bit unsigned integer (cross-platform)
 			}
 			// Convert to hex and take first 16 characters
-			$hashHex = dechex(sprintf('%u', $hash));
+			$hashHex = dechex($hash & 0xFFFFFFFF);
 			$key = substr(str_repeat($hashHex, 4), 0, 16);
 		}
 		
