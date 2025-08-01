@@ -59,11 +59,11 @@ class EmailObfuscator {
 			// Ersetze mailto-Links (zuerst!)
 			// Anmerkung: Attributwerte (hier: href) benötigen nicht zwingend Anführungsstriche drumrum,
 			// deshalb prüfen wir zusätzlich noch auf '>' am Ende .
-			$content = preg_replace_callback('/mailto:(.*?)(?=[\'\"\>])/', 'emailobfuscator::encodeEmailLinksUnicorn', $content);
+			$content = preg_replace_callback('/mailto:(.*?)(?=[\'\"\>])/', 'FriendsOfRedaxo\EmailObfuscator\EmailObfuscator::encodeEmailLinksUnicorn', $content);
 
 			// Ersetze E-Mailadressen
 			if (!$emailobfuscator->getConfig('mailto_only')) {
-				$content = preg_replace_callback('/([\w\-\+\.]+)@([\w\-\.]+\.[\w]{2,})/', 'emailobfuscator::encodeEmailUnicorn', $content);
+				$content = preg_replace_callback('/([\w\-\+\.]+)@([\w\-\.]+\.[\w]{2,})/', 'FriendsOfRedaxo\EmailObfuscator\EmailObfuscator::encodeEmailUnicorn', $content);
 			}
 
 			// Injiziere CSS vors schließende </head> im Seitenkopf
@@ -225,7 +225,7 @@ class EmailObfuscator {
 		$context = '';
 		if ($method === 'xor_dynamic') {
 			// Use current article ID or page identifier as context
-			$context = rex_article::getCurrentId() ?: 'default';
+			$context = \rex_article::getCurrentId() ?: 'default';
 		}
 
 		// Encrypt email and text
@@ -398,7 +398,7 @@ class EmailObfuscator {
 	 */
 	private static function encodeEmailUnicorn($matches) {
 		// Whitelist
-		if (($_SERVER['REQUEST_METHOD'] == 'POST' && self::in_array_r($matches[0], $_POST)) || self::in_array_r($matches[0], self::$whitelist)) {
+		if ((isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' && self::in_array_r($matches[0], $_POST)) || self::in_array_r($matches[0], self::$whitelist)) {
             return $matches[0];
         }
         return $matches[1] . '<span class="unicorn"><span>_at_</span></span>' . $matches[2];
@@ -421,7 +421,7 @@ class EmailObfuscator {
 	private static function makeEmailClickable($ret) {
 		$ret = ' ' . $ret;
 		// in testing, using arrays here was found to be faster
-		$ret = preg_replace_callback('#([\s>])([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})#i', 'emailobfuscator::make_email_clickable_callback', $ret);
+		$ret = preg_replace_callback('#([\s>])([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})#i', 'FriendsOfRedaxo\EmailObfuscator\EmailObfuscator::make_email_clickable_callback', $ret);
 	 
 		// this one is not in an array because we need it to run last, for cleanup of accidental links within links
 		$ret = preg_replace("#(<a( [^>]+?>|>))<a [^>]+?>([^>]+?)</a></a>#i", "$1$3</a>", $ret);
