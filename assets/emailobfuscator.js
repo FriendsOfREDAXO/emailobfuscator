@@ -64,7 +64,7 @@ function decryptEmailData(encryptedData, method, context) {
 			hash = hash >>> 0; // Convert to unsigned 32-bit integer
 		}
 		// Convert hash to hex and take first 16 characters
-		var hashHex = Math.abs(hash).toString(16);
+		var hashHex = (hash >>> 0).toString(16);
 		key = (hashHex + hashHex + hashHex + hashHex).substring(0, 16);
 	}
 	
