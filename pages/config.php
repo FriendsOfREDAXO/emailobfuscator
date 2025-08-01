@@ -85,11 +85,11 @@ $content .= $fragment->parse('core/form/form.php');
 $content .= '
     </fieldset>';
 
-// Hide assets fieldset if method is not unicorn
+// Show assets fieldset for methods that need JavaScript
 ?>
 <script>
 	function market_type_changer(value) {
-		if (value === "rot13_unicorn") {
+		if (value === "rot13_unicorn" || value === "xor_simple" || value === "xor_dynamic" || value === "rot13_javascript" || value === "rot13_javascript_css") {
 			$("#assets").fadeIn();
 		}
 		else {

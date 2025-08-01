@@ -53,13 +53,22 @@ Ab Version 2.0 des Addons wird __kein jQuery mehr benötigt__. Das JavaScript ve
 
 
 
-### Hinweise zur manuellen Einbindung: CSS und JavaScript
+### Automatische JavaScript-Einbindung
 
-⚠️ __Wichtig__: Die folgenden Hinweise gelten nur für die veraltete __ROT13 Einhorn-Markup__ Methode. Die modernen XOR-Methoden benötigen kein jQuery und funktionieren mit dem Standard-JavaScript des Addons.
+Das Addon lädt __automatisch__ das benötigte JavaScript für alle Verschlüsselungsmethoden, die eine clientseitige Entschlüsselung benötigen:
 
-Du kannst die Styles und Scripte auf zwei Arten einbinden: Entweder du lädst die Files, die das Addon bereitstellt, oder du kopierst deren Inhalte in deine bestehenden CSS- und JavaScript-Files.
+- XOR Verschlüsselung (einfach und dynamisch)
+- ROT13 Einhorn-Markup
+- ROT13 JavaScript Verschlüsselung
+- ROT13 JavaScript mit CSS Fallback
 
-#### a) Dateien laden
+Das JavaScript wird automatisch vor dem schließenden `</body>` Tag eingefügt. Du musst __nichts manuell einbinden__.
+
+### Hinweise zur manuellen Einbindung (optional)
+
+Falls du das automatische Laden deaktivieren möchtest, kannst du die Styles und Scripte manuell einbinden. Du kannst die Files, die das Addon bereitstellt, laden oder deren Inhalte in deine bestehenden CSS- und JavaScript-Files kopieren.
+
+#### a) Dateien manuell laden (falls automatisches Laden deaktiviert)
 
 __CSS__ im `<head>` deiner Website einfügen:
 
@@ -85,9 +94,9 @@ __JavaScript__ am besten am Ende deiner Website vorm schließenden `</body>` ein
 ?>
 ```
 
-#### b) Inhalte kopieren
+#### b) Inhalte in eigene Dateien kopieren (falls automatisches Laden deaktiviert)
 
-Kopiere die Inhalte der CSS-Datei und der JS-Datei jeweils in deine Sourcen:
+Falls du das automatische Laden deaktiviert hast, kannst du die Inhalte der CSS- und JS-Datei in deine eigenen Sourcen kopieren:
 
     assets/emailobfuscator.css
     assets/emailobfuscator.js
