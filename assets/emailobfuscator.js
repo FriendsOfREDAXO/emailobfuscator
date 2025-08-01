@@ -92,16 +92,6 @@ function deobfuscateXorEmails() {
 			link.textContent = text;
 			
 			if (attributes) {
-				// Simple attribute parsing
-				var attrParts = attributes.split(" ");
-				Array.prototype.forEach.call(attrParts, function(attr) {
-					var eqIndex = attr.indexOf("=");
-					if (eqIndex > 0) {
-						var attrName = attr.substring(0, eqIndex);
-						var attrValue = attr.substring(eqIndex + 1).replace(/["\']/g, "");
-						if (attrName && attrValue && attrName !== "href") {
-							link.setAttribute(attrName, attrValue);
-						}
 				// Robust attribute parsing using regex
 				var attrRegex = /([^\s=]+)\s*=\s*(['"])(.*?)\2|([^\s=]+)\s*=\s*([^\s"']+)/g;
 				var match;
