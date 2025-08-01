@@ -63,7 +63,7 @@ class EmailObfuscator {
 
 			// Ersetze E-Mailadressen
 			if (!$emailobfuscator->getConfig('mailto_only')) {
-				$content = preg_replace_callback('/([\w\-\+\.]+)@([\w\-\.]+\.[\w]{2,})/', 'FriendsOfRedaxo\EmailObfuscator\EmailObfuscator::encodeEmailUnicorn', $content);
+				$content = preg_replace_callback('/([\w\-\+\.]+@[\w\-\.]+\.[\w]{2,}(?:\?[^\s<>]*?)?)(?=[\s<>]|[.!?]\s|$)/i', 'FriendsOfRedaxo\EmailObfuscator\EmailObfuscator::encodeEmailUnicorn', $content);
 			}
 
 			// Injiziere CSS vors schließende </head> im Seitenkopf
@@ -397,11 +397,19 @@ class EmailObfuscator {
 	 * @return string
 	 */
 	private static function encodeEmailUnicorn($matches) {
+		$fullEmail = $matches[1]; // Now contains the full email with parameters
+		$emailPart = preg_replace('/\?.*$/', '', $fullEmail); // Extract email part for whitelist check
+		
 		// Whitelist
-		if ((isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' && self::in_array_r($matches[0], $_POST)) || self::in_array_r($matches[0], self::$whitelist)) {
+		if ((isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' && self::in_array_r($matches[0], $_POST)) || self::in_array_r($emailPart, self::$whitelist)) {
             return $matches[0];
         }
-        return $matches[1] . '<span class="unicorn"><span>_at_</span></span>' . $matches[2];
+        
+        // Split email part for obfuscation  
+        $emailParts = explode('@', $emailPart);
+        $parameters = str_replace($emailPart, '', $fullEmail); // Get the parameter part
+        
+        return $emailParts[0] . '<span class="unicorn"><span>_at_</span></span>' . $emailParts[1] . $parameters;
     }
 
     private static function in_array_r($needle, $haystack, $strict = false) {
@@ -420,8 +428,9 @@ class EmailObfuscator {
 	 */
 	private static function makeEmailClickable($ret) {
 		$ret = ' ' . $ret;
-		// in testing, using arrays here was found to be faster
-		$ret = preg_replace_callback('#([\s>])([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})#i', 'FriendsOfRedaxo\EmailObfuscator\EmailObfuscator::make_email_clickable_callback', $ret);
+		// Simplified approach: match email + parameters until whitespace, <, >, or punctuation at end
+		// This handles the most common real-world cases properly
+		$ret = preg_replace_callback('#([\s>])([a-z0-9._+-]+@[a-z0-9.-]+\.[a-z]{2,}(?:\?[^\s<>]*?)?)(?=[\s<>]|[.!?]\s|$)#i', 'FriendsOfRedaxo\EmailObfuscator\EmailObfuscator::make_email_clickable_callback', $ret);
 	 
 		// this one is not in an array because we need it to run last, for cleanup of accidental links within links
 		$ret = preg_replace("#(<a( [^>]+?>|>))<a [^>]+?>([^>]+?)</a></a>#i", "$1$3</a>", $ret);
@@ -431,9 +440,11 @@ class EmailObfuscator {
 	}
 
 	private static function make_email_clickable_callback($matches) {
-		$email = $matches[2] . '@' . $matches[3];
+		$fullEmail = $matches[2];
+		// Extract just the email part for display (before the ?)
+		$displayEmail = preg_replace('/\?.*$/', '', $fullEmail);
 
-		return $matches[1] . "<a href=\"mailto:$email\">$email</a>";
+		return $matches[1] . "<a href=\"mailto:$fullEmail\">$displayEmail</a>";
 	}
 	
 	/**
