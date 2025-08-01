@@ -311,7 +311,7 @@ class EmailObfuscator {
 		$emailPart = preg_replace('/\?.*$/', '', $fullEmail); // Extract email part for whitelist check
 		
 		// Whitelist
-		if ((isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' && self::in_array_r($matches[0], $_POST)) || self::in_array_r($emailPart, self::$whitelist)) {
+		if ((isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' && self::in_array_r($emailPart, $_POST)) || self::in_array_r($emailPart, self::$whitelist)) {
             return $matches[0];
         }
         
