@@ -103,7 +103,16 @@ function deobfuscateXorEmails() {
 							link.setAttribute(attrName, attrValue);
 						}
 					}
-				});
+				// Robust attribute parsing using regex
+				var attrRegex = /([^\s=]+)\s*=\s*(['"])(.*?)\2|([^\s=]+)\s*=\s*([^\s"']+)/g;
+				var match;
+				while ((match = attrRegex.exec(attributes)) !== null) {
+					var attrName = match[1] || match[4];
+					var attrValue = match[3] || match[5];
+					if (attrName && attrValue && attrName !== "href") {
+						link.setAttribute(attrName, attrValue);
+					}
+				}
 			}
 			
 			element.parentNode.replaceChild(link, element);
