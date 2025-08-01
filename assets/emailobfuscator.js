@@ -102,7 +102,6 @@ function deobfuscateXorEmails() {
 						if (attrName && attrValue && attrName !== "href") {
 							link.setAttribute(attrName, attrValue);
 						}
-					}
 				// Robust attribute parsing using regex
 				var attrRegex = /([^\s=]+)\s*=\s*(['"])(.*?)\2|([^\s=]+)\s*=\s*([^\s"']+)/g;
 				var match;
