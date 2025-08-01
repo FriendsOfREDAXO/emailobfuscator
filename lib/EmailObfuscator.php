@@ -12,13 +12,48 @@ class EmailObfuscator {
     private static $whitelist = [];
 
 	/**
+	 * XOR encrypt/decrypt function (symmetric)
+	 * @param string $text Text to encrypt/decrypt
+	 * @param string $key Encryption key
+	 * @return string Encrypted/decrypted text
+	 */
+	private static function xorCrypt($text, $key) {
+		$result = '';
+		$keyLength = strlen($key);
+		
+		for ($i = 0; $i < strlen($text); $i++) {
+			$result .= chr(ord($text[$i]) ^ ord($key[$i % $keyLength]));
+		}
+		
+		return $result;
+	}
+
+	/**
+	 * URL-safe base64 encode
+	 * @param string $data Data to encode
+	 * @return string Encoded data
+	 */
+	private static function base64UrlEncode($data) {
+		return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+	}
+
+	/**
+	 * URL-safe base64 decode
+	 * @param string $data Data to decode
+	 * @return string Decoded data
+	 */
+	private static function base64UrlDecode($data) {
+		return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
+	}
+
+	/**
 	 * Perform obfuscation
 	 * @param string $content Content
 	 * @return string Content
 	 */
 	public static function obfuscate($content) {
 		$emailobfuscator = rex_addon::get('emailobfuscator');
-		$method = $emailobfuscator->getConfig('method', '') == '' ? 'rot13_unicorn' : $emailobfuscator->getConfig('method', '');
+		$method = $emailobfuscator->getConfig('method', '') == '' ? 'xor_simple' : $emailobfuscator->getConfig('method', '');
 
 		if($method == 'rot13_unicorn') {
 			// Ersetze mailto-Links (zuerst!)
@@ -42,6 +77,29 @@ class EmailObfuscator {
 				$jsFile = '<script defer src="' . $emailobfuscator->getAssetsUrl('emailobfuscator.js?v=' . $emailobfuscator->getVersion()) . '"></script>';
 				$content = str_replace('</body>', $jsFile . '</body>', $content);
 			}
+		}
+		else if($method == 'xor_simple' || $method == 'xor_dynamic') {
+			// New XOR-based methods
+			$atPos = strpos($content, '@');
+
+			if ($atPos === false) {
+				// nothing to do
+				return $content;
+			}
+
+			if(!rex_config::get('emailobfuscator', 'mailto_only', false)) {
+				// wrap anchor tag around email-adresses that don't have already an anchor tag around them
+				$content = self::makeEmailClickable($content);
+			}
+
+			// replace all email addresses (now all wrapped in anchor tag) with spam aware version
+			$content = preg_replace_callback('`\<a([^>]+)href\=\"mailto\:([^">]+)\"([^>]*)\>(.*?)\<\/a\>`ism', function ($m) use ($method) {
+				return self::encodeEmailXor($m[2], $m[4], $m[1], $m[3], $method);
+			}, $content);
+
+			// Inject JavaScript for XOR decryption
+			$jsCode = self::getXorJavaScript();
+			$content = str_replace('</body>', $jsCode . '</body>', $content);
 		}
 		else {
 			$atPos = strpos($content, '@');
@@ -130,6 +188,189 @@ class EmailObfuscator {
 		}
 
 		return $encoded;
+	}
+
+	/**
+	 * Encode E-Mail address using XOR encryption
+	 * @param string $email E-mail address
+	 * @param string $text E-mail link text
+	 * @param string $attributesBeforeHref attributes within a tag before href
+	 * @param string $attributesAfterHref attributes within a tag after href
+	 * @param string $method XOR method (xor_simple or xor_dynamic)
+	 * @return string Encoded email link
+	 */
+	private static function encodeEmailXor($email, $text = "", $attributesBeforeHref = '', $attributesAfterHref = '', $method = 'xor_simple') {
+		if (empty($text)) {
+			$text = $email;
+		}
+
+		$attributesBeforeHref = trim($attributesBeforeHref);
+		$attributesAfterHref = trim($attributesAfterHref);
+
+		if ($attributesBeforeHref != '') {
+			$attributesBeforeHref = str_replace('"', '\\"', $attributesBeforeHref);
+		}
+
+		if ($attributesAfterHref != '') {
+			$attributesAfterHref = str_replace('"', '\\"', $attributesAfterHref);
+			$attributesAfterHref = ' ' . $attributesAfterHref;
+		}
+	
+		// Whitelist
+		if(in_array($email, self::$whitelist)) {
+			return '<a ' . $attributesBeforeHref . 'href="mailto:' . $email . '"' . $attributesAfterHref . '>' . $text . '</a>';
+		}
+
+		// Generate context for dynamic method
+		$context = '';
+		if ($method === 'xor_dynamic') {
+			// Use current article ID or page identifier as context
+			$context = rex_article::getCurrentId() ?: 'default';
+		}
+
+		// Encrypt email and text
+		$encryptedEmail = self::encryptEmailData($email, $method, $context);
+		$encryptedText = self::encryptEmailData($text, $method, $context);
+		$encryptedAttributes = '';
+		
+		if ($attributesBeforeHref || $attributesAfterHref) {
+			$allAttributes = trim($attributesBeforeHref . ' ' . $attributesAfterHref);
+			$encryptedAttributes = self::encryptEmailData($allAttributes, $method, $context);
+		}
+
+		// Create obfuscated span with data attributes
+		$dataMethod = $method === 'xor_simple' ? 'xor-simple' : 'xor-dynamic';
+		$dataContext = $method === 'xor_dynamic' ? ' data-context="' . htmlspecialchars($context) . '"' : '';
+		
+		return '<span class="email-obfuscated" data-method="' . $dataMethod . '"' . $dataContext . 
+			   ' data-email="' . htmlspecialchars($encryptedEmail) . '"' . 
+			   ' data-text="' . htmlspecialchars($encryptedText) . '"' . 
+			   ($encryptedAttributes ? ' data-attributes="' . htmlspecialchars($encryptedAttributes) . '"' : '') . 
+			   '>' . htmlspecialchars($text) . '</span>';
+	}
+
+	/**
+	 * Encrypt email data using specified method
+	 * @param string $data Data to encrypt
+	 * @param string $method Encryption method
+	 * @param string $context Context for dynamic method
+	 * @return string Encrypted data
+	 */
+	private static function encryptEmailData($data, $method, $context = '') {
+		if ($method === 'xor_simple') {
+			$key = 'EmailObfuscatorKey2024';
+		} else {
+			// Generate dynamic key using simple hash (compatible with JavaScript)
+			$baseKey = 'EmailObfuscator';
+			$fullString = $baseKey . $context;
+			$hash = 0;
+			for ($i = 0; $i < strlen($fullString); $i++) {
+				$char = ord($fullString[$i]);
+				$hash = (($hash << 5) - $hash) + $char;
+				$hash = $hash & 0xFFFFFFFF; // Keep as 32-bit integer
+			}
+			// Convert to hex and take first 16 characters
+			$hashHex = dechex(abs($hash));
+			$key = substr(str_repeat($hashHex, 4), 0, 16);
+		}
+		
+		$encrypted = self::xorCrypt($data, $key);
+		return self::base64UrlEncode($encrypted);
+	}
+
+	/**
+	 * Get XOR decryption JavaScript code
+	 * @return string JavaScript code
+	 */
+	private static function getXorJavaScript() {
+		return '
+<script>
+(function() {
+	function base64UrlDecode(str) {
+		str = (str + "===").slice(0, str.length + (str.length % 4));
+		return atob(str.replace(/-/g, "+").replace(/_/g, "/"));
+	}
+
+	function xorDecrypt(encrypted, key) {
+		var result = "";
+		for (var i = 0; i < encrypted.length; i++) {
+			result += String.fromCharCode(encrypted.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+		}
+		return result;
+	}
+
+	function decryptEmailData(encryptedData, method, context) {
+		var key;
+		if (method === "xor-simple") {
+			key = "EmailObfuscatorKey2024";
+		} else {
+			// Generate dynamic key using a simple hash
+			var baseKey = "EmailObfuscator";
+			var fullString = baseKey + (context || "");
+			var hash = 0;
+			for (var i = 0; i < fullString.length; i++) {
+				var char = fullString.charCodeAt(i);
+				hash = ((hash << 5) - hash) + char;
+				hash = hash & hash; // Convert to 32-bit integer
+			}
+			// Convert hash to hex and take first 16 characters
+			var hashHex = Math.abs(hash).toString(16);
+			key = (hashHex + hashHex + hashHex + hashHex).substring(0, 16);
+		}
+		
+		var decoded = base64UrlDecode(encryptedData);
+		return xorDecrypt(decoded, key);
+	}
+
+	function deobfuscateEmails() {
+		var obfuscatedElements = document.querySelectorAll(".email-obfuscated");
+		
+		obfuscatedElements.forEach(function(element) {
+			var method = element.getAttribute("data-method");
+			var context = element.getAttribute("data-context") || "";
+			var encryptedEmail = element.getAttribute("data-email");
+			var encryptedText = element.getAttribute("data-text");
+			var encryptedAttributes = element.getAttribute("data-attributes");
+			
+			try {
+				var email = decryptEmailData(encryptedEmail, method, context);
+				var text = decryptEmailData(encryptedText, method, context);
+				var attributes = encryptedAttributes ? decryptEmailData(encryptedAttributes, method, context) : "";
+				
+				var link = document.createElement("a");
+				link.href = "mailto:" + email;
+				link.textContent = text;
+				
+				if (attributes) {
+					// Simple attribute parsing - in a real implementation you might want more robust parsing
+					var attrParts = attributes.split(" ");
+					attrParts.forEach(function(attr) {
+						var eqIndex = attr.indexOf("=");
+						if (eqIndex > 0) {
+							var attrName = attr.substring(0, eqIndex);
+							var attrValue = attr.substring(eqIndex + 1).replace(/["\']/g, "");
+							if (attrName && attrValue && attrName !== "href") {
+								link.setAttribute(attrName, attrValue);
+							}
+						}
+					});
+				}
+				
+				element.parentNode.replaceChild(link, element);
+			} catch (e) {
+				console.warn("Failed to deobfuscate email:", e);
+			}
+		});
+	}
+
+	// Initialize when DOM is ready
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", deobfuscateEmails);
+	} else {
+		deobfuscateEmails();
+	}
+})();
+</script>';
 	}
 	
  	/**

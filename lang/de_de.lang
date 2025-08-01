@@ -4,10 +4,12 @@ emailobfuscator_config = Konfiguration
 emailobfuscator_config_saved = Konfiguration gespeichert.
 emailobfuscator_config_methods = Methoden
 emailobfuscator_config_select_method = Verschlüsselungsmethode
+emailobfuscator_config_select_method_xor_simple = XOR Verschlüsselung (Sicher, empfohlen)
+emailobfuscator_config_select_method_xor_dynamic = XOR Verschlüsselung mit dynamischem Schlüssel (Sehr sicher, empfohlen)
 emailobfuscator_config_select_method_css = CSS Methode ohne JavaScript (entfernt Link und verwandelt Adresse in name[at]domain.tld)
-emailobfuscator_config_select_method_rot13 = ROT13 JavaScript Verschlüsselung
-emailobfuscator_config_select_method_rot13_css = ROT13 JavaScript Verschlüsselung mit CSS Methode falls JavaScript deaktiviert ist
-emailobfuscator_config_select_method_unicorn = ROT13 Einhorn-Markup (Standard, benötigt JQuery)
+emailobfuscator_config_select_method_rot13 = ROT13 JavaScript Verschlüsselung (Veraltet, unsicher)
+emailobfuscator_config_select_method_rot13_css = ROT13 JavaScript Verschlüsselung mit CSS Methode falls JavaScript deaktiviert ist (Veraltet, unsicher)
+emailobfuscator_config_select_method_unicorn = ROT13 Einhorn-Markup (Veraltet, unsicher, benötigt JQuery)
 emailobfuscator-config-method
 emailobfuscator_config_assets = Assets
 emailobfuscator_config_load_assets = Scripte und Styles laden

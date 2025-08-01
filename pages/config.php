@@ -33,6 +33,8 @@ $select = new rex_select();
 $select->setId('emailobfuscator-config-method');
 $select->setAttribute('class', 'form-control');
 $select->setName('config[method]');
+$select->addOption($this->i18n('emailobfuscator_config_select_method_xor_simple'), 'xor_simple');
+$select->addOption($this->i18n('emailobfuscator_config_select_method_xor_dynamic'), 'xor_dynamic');
 $select->addOption($this->i18n('emailobfuscator_config_select_method_unicorn'), 'rot13_unicorn');
 $select->addOption($this->i18n('emailobfuscator_config_select_method_rot13'), 'rot13_javascript');
 $select->addOption($this->i18n('emailobfuscator_config_select_method_css'), 'css');
