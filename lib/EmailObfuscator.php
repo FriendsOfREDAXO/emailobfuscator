@@ -270,7 +270,7 @@ class EmailObfuscator {
 			for ($i = 0; $i < strlen($fullString); $i++) {
 				$char = ord($fullString[$i]);
 				$hash = (($hash << 5) - $hash) + $char;
-				$hash = $hash & 0xFFFFFFFF; // Keep as 32-bit integer
+				$hash = ($hash << 32) >> 32; // Keep as 32-bit signed integer (cross-platform)
 			}
 			// Convert to hex and take first 16 characters
 			$hashHex = dechex(abs($hash));
