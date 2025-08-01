@@ -37,8 +37,24 @@ function decryptEmailaddresses() {
 
 // XOR decryption functions
 function base64UrlDecode(str) {
-	str = (str + "===").slice(0, str.length + (str.length % 4));
-	return atob(str.replace(/-/g, "+").replace(/_/g, "/"));
+	// Add proper padding
+	var padding = str.length % 4;
+	if (padding === 2) {
+		str += "==";
+	} else if (padding === 3) {
+		str += "=";
+	} else if (padding === 1) {
+		throw new Error("Invalid base64url string");
+	}
+	
+	// Replace URL-safe characters with standard base64 characters
+	str = str.replace(/-/g, "+").replace(/_/g, "/");
+	
+	try {
+		return atob(str);
+	} catch (e) {
+		throw new Error("Invalid base64 characters in: " + str);
+	}
 }
 
 function xorDecrypt(encrypted, key) {
@@ -68,8 +84,12 @@ function decryptEmailData(encryptedData, method, context) {
 		key = (hashHex + hashHex + hashHex + hashHex).substring(0, 16);
 	}
 	
-	var decoded = base64UrlDecode(encryptedData);
-	return xorDecrypt(decoded, key);
+	try {
+		var decoded = base64UrlDecode(encryptedData);
+		return xorDecrypt(decoded, key);
+	} catch (e) {
+		throw new Error("Failed to decrypt data '" + encryptedData + "': " + e.message);
+	}
 }
 
 function deobfuscateXorEmails() {
@@ -106,7 +126,13 @@ function deobfuscateXorEmails() {
 			
 			element.parentNode.replaceChild(link, element);
 		} catch (e) {
-			console.warn("Failed to deobfuscate email:", e);
+			console.warn("Failed to deobfuscate email: " + e.message + " - Element data:", {
+				method: method,
+				context: context,
+				encryptedEmail: encryptedEmail,
+				encryptedText: encryptedText,
+				encryptedAttributes: encryptedAttributes
+			});
 		}
 	});
 }
