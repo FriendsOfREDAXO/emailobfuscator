@@ -50,10 +50,24 @@ function base64UrlDecode(str) {
 	// Replace URL-safe characters with standard base64 characters
 	str = str.replace(/-/g, "+").replace(/_/g, "/");
 	
+	// Use a more robust base64 decoding approach
 	try {
-		return atob(str);
+		// First try the standard atob approach
+		var decoded = atob(str);
+		
+		// Convert to a proper binary string by ensuring each character is a proper byte
+		var result = "";
+		for (var i = 0; i < decoded.length; i++) {
+			var charCode = decoded.charCodeAt(i);
+			// Ensure the character code is in the valid byte range (0-255)
+			if (charCode < 0 || charCode > 255) {
+				throw new Error("Invalid character code: " + charCode);
+			}
+			result += String.fromCharCode(charCode & 0xFF);
+		}
+		return result;
 	} catch (e) {
-		throw new Error("Invalid base64 characters in: " + str);
+		throw new Error("Invalid base64 characters in: " + str + " (" + e.message + ")");
 	}
 }
 
