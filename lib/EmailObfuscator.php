@@ -28,7 +28,7 @@ class EmailObfuscator {
 
 			// Ersetze E-Mailadressen
 			if (!$emailobfuscator->getConfig('mailto_only')) {
-				$content = preg_replace_callback('/([\w\-\+\.]+)@([\w\-\.]+\.[\w]{2,})/', 'emailobfuscator::encodeEmailUnicorn', $content);
+				$content = preg_replace_callback('/(?<![\/\w])([\w\-\+\.]+)@([\w\-\.]+\.[\w]{2,})(?![\w\/])/', 'emailobfuscator::encodeEmailUnicorn', $content);
 			}
 
 			// Injiziere CSS vors schließende </head> im Seitenkopf
