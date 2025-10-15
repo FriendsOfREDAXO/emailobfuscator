@@ -28,7 +28,7 @@ class EmailObfuscator {
 
 			// Ersetze E-Mailadressen
 			if (!$emailobfuscator->getConfig('mailto_only')) {
-				$content = preg_replace_callback('/(?<![\/\w])([\w\-\+\.]+)@(?!\d+x\.)([\w\-\.]+\.[\w]{2,})(?![\w\/])/', 'emailobfuscator::encodeEmailUnicorn', $content);
+				$content = self::obfuscateEmailsNotInAttributes($content);
 			}
 
 			// Injiziere CSS vors schließende </head> im Seitenkopf
@@ -150,6 +150,67 @@ class EmailObfuscator {
         return 'javascript:decryptUnicorn(' . $mail . ')';
     }
 
+	/**
+	 * Obfuscate emails but skip those within HTML attribute values
+	 * @param string $content Content to process
+	 * @return string Processed content
+	 */
+	private static function obfuscateEmailsNotInAttributes($content) {
+		$pattern = '/(?<![\/\w])([\w\-\+\.]+)@([\w\-\.]+\.[\w]{2,})(?![\w\/])/';
+		
+		$offset = 0;
+		$result = $content;
+		
+		while (preg_match($pattern, $result, $matches, PREG_OFFSET_CAPTURE, $offset)) {
+			$email = $matches[0][0];
+			$pos = $matches[0][1];
+			
+			// Check if we're inside an HTML attribute value
+			$before = substr($result, 0, $pos);
+			
+			// Find the last opening tag before this position
+			$lastTagStart = strrpos($before, '<');
+			$lastTagEnd = strrpos($before, '>');
+			
+			$shouldObfuscate = true;
+			
+			// If we found a < after the last >, we're potentially inside a tag
+			if ($lastTagStart !== false && ($lastTagEnd === false || $lastTagStart > $lastTagEnd)) {
+				// We're inside a tag, check if we're inside quotes (attribute value)
+				$tagContent = substr($before, $lastTagStart);
+				
+				// Count quotes to see if we're inside an attribute value
+				$doubleQuotes = substr_count($tagContent, '"');
+				$singleQuotes = substr_count($tagContent, "'");
+				
+				// If odd number of quotes, we're inside an attribute value
+				if (($doubleQuotes % 2) == 1 || ($singleQuotes % 2) == 1) {
+					$shouldObfuscate = false;
+				}
+			}
+			
+			if ($shouldObfuscate) {
+				// Check whitelist
+				$fullMatch = array($email, $matches[1][0], $matches[2][0]);
+				if (($_SERVER['REQUEST_METHOD'] == 'POST' && self::in_array_r($email, $_POST)) || self::in_array_r($email, self::$whitelist)) {
+					$shouldObfuscate = false;
+				}
+			}
+			
+			if ($shouldObfuscate) {
+				// Obfuscate the email
+				$replacement = $matches[1][0] . '<span class="unicorn"><span>_at_</span></span>' . $matches[2][0];
+				$result = substr_replace($result, $replacement, $pos, strlen($email));
+				$offset = $pos + strlen($replacement);
+			} else {
+				// Skip this match
+				$offset = $pos + strlen($email);
+			}
+		}
+		
+		return $result;
+	}
+
  	/**
 	 * Encode E-Mail address
 	 * @param string[] $matches 
@@ -179,8 +240,53 @@ class EmailObfuscator {
 	 */
 	private static function makeEmailClickable($ret) {
 		$ret = ' ' . $ret;
-		// in testing, using arrays here was found to be faster
-		$ret = preg_replace_callback('#([\s>])([.0-9a-z_+-]+)@(?!\d+x\.)(([0-9a-z-]+\.)+[0-9a-z]{2,})#i', 'emailobfuscator::make_email_clickable_callback', $ret);
+		
+		// Process emails but skip those in HTML attributes
+		$pattern = '#([\s>])([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})#i';
+		$offset = 0;
+		
+		while (preg_match($pattern, $ret, $matches, PREG_OFFSET_CAPTURE, $offset)) {
+			$fullMatch = $matches[0][0];
+			$pos = $matches[0][1];
+			$email = $matches[2][0] . '@' . $matches[3][0];
+			
+			// Skip retina image patterns like @2x.png, @3x.jpg, etc.
+			if (preg_match('/^[^@]+@\d+x\./i', $email)) {
+				$offset = $pos + strlen($fullMatch);
+				continue;
+			}
+			
+			// Check if we're inside an HTML attribute value
+			$before = substr($ret, 0, $pos);
+			$lastTagStart = strrpos($before, '<');
+			$lastTagEnd = strrpos($before, '>');
+			
+			$shouldMakeClickable = true;
+			
+			// If we found a < after the last >, we're potentially inside a tag
+			if ($lastTagStart !== false && ($lastTagEnd === false || $lastTagStart > $lastTagEnd)) {
+				// We're inside a tag, check if we're inside quotes (attribute value)
+				$tagContent = substr($before, $lastTagStart);
+				
+				// Count quotes - if odd, we're inside an attribute value
+				$doubleQuotes = substr_count($tagContent, '"');
+				$singleQuotes = substr_count($tagContent, "'");
+				
+				if (($doubleQuotes % 2) == 1 || ($singleQuotes % 2) == 1) {
+					$shouldMakeClickable = false;
+				}
+			}
+			
+			if ($shouldMakeClickable) {
+				// Make clickable
+				$replacement = $matches[1][0] . "<a href=\"mailto:$email\">$email</a>";
+				$ret = substr_replace($ret, $replacement, $pos, strlen($fullMatch));
+				$offset = $pos + strlen($replacement);
+			} else {
+				// Skip this match
+				$offset = $pos + strlen($fullMatch);
+			}
+		}
 	 
 		// this one is not in an array because we need it to run last, for cleanup of accidental links within links
 		$ret = preg_replace("#(<a( [^>]+?>|>))<a [^>]+?>([^>]+?)</a></a>#i", "$1$3</a>", $ret);
