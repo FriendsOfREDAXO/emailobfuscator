@@ -28,7 +28,7 @@ class EmailObfuscator {
 
 			// Ersetze E-Mailadressen
 			if (!$emailobfuscator->getConfig('mailto_only')) {
-				$content = preg_replace_callback('/(?<![\/\w])([\w\-\+\.]+)@([\w\-\.]+\.[\w]{2,})(?![\w\/])/', 'emailobfuscator::encodeEmailUnicorn', $content);
+				$content = preg_replace_callback('/(?<![\/\w])([\w\-\+\.]+)@(?!\d+x\.)([\w\-\.]+\.[\w]{2,})(?![\w\/])/', 'emailobfuscator::encodeEmailUnicorn', $content);
 			}
 
 			// Injiziere CSS vors schließende </head> im Seitenkopf
@@ -180,7 +180,7 @@ class EmailObfuscator {
 	private static function makeEmailClickable($ret) {
 		$ret = ' ' . $ret;
 		// in testing, using arrays here was found to be faster
-		$ret = preg_replace_callback('#([\s>])([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})#i', 'emailobfuscator::make_email_clickable_callback', $ret);
+		$ret = preg_replace_callback('#([\s>])([.0-9a-z_+-]+)@(?!\d+x\.)(([0-9a-z-]+\.)+[0-9a-z]{2,})#i', 'emailobfuscator::make_email_clickable_callback', $ret);
 	 
 		// this one is not in an array because we need it to run last, for cleanup of accidental links within links
 		$ret = preg_replace("#(<a( [^>]+?>|>))<a [^>]+?>([^>]+?)</a></a>#i", "$1$3</a>", $ret);
