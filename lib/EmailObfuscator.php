@@ -250,11 +250,7 @@ class EmailObfuscator {
 			$pos = $matches[0][1];
 			$email = $matches[2][0] . '@' . $matches[3][0];
 			
-			// Skip retina image patterns like @2x.png, @3x.jpg, etc.
-			if (preg_match('/^[^@]+@\d+x\./i', $email)) {
-				$offset = $pos + strlen($fullMatch);
-				continue;
-			}
+			// (Retina pattern check removed; attribute detection logic below suffices)
 			
 			// Check if we're inside an HTML attribute value
 			$before = substr($ret, 0, $pos);
