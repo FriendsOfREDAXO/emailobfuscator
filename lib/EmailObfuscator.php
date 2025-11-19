@@ -191,7 +191,6 @@ class EmailObfuscator {
 			
 			if ($shouldObfuscate) {
 				// Check whitelist
-				$fullMatch = array($email, $matches[1][0], $matches[2][0]);
 				if (($_SERVER['REQUEST_METHOD'] == 'POST' && self::in_array_r($email, $_POST)) || self::in_array_r($email, self::$whitelist)) {
 					$shouldObfuscate = false;
 				}
