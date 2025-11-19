@@ -279,6 +279,13 @@ class EmailObfuscator {
 			}
 			
 			if ($shouldMakeClickable) {
+				// Check whitelist for consistency with obfuscateEmailsNotInAttributes
+				if (self::in_array_r($email, self::$whitelist)) {
+					$shouldMakeClickable = false;
+				}
+			}
+			
+			if ($shouldMakeClickable) {
 				// Make clickable
 				$replacement = $matches[1][0] . "<a href=\"mailto:$email\">$email</a>";
 				$ret = substr_replace($ret, $replacement, $pos, strlen($fullMatch));
