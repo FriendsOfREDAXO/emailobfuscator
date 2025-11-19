@@ -195,8 +195,7 @@ class EmailObfuscator {
 
             if ($shouldObfuscate) {
                 // Check whitelist
-                $fullMatch = array($email, $matches[1][0], $matches[2][0]);
-                if (($_SERVER['REQUEST_METHOD'] == 'POST' && self::in_array_r($email, $_POST)) || self::in_array_r($email, self::$whitelist)) {
+                if ((isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST) && self::in_array_r($email, $_POST)) || self::in_array_r($email, self::$whitelist)) {
                     $shouldObfuscate = false;
                 }
             }
@@ -245,6 +244,16 @@ class EmailObfuscator {
 	private static function makeEmailClickable($ret) {
 		$ret = ' ' . $ret;
 		
+		// Precompute all HTML tag ranges in the content
+		$tagRanges = [];
+		if (preg_match_all('/<[^>]*>/', $ret, $tagMatches, PREG_OFFSET_CAPTURE)) {
+			foreach ($tagMatches[0] as $tagMatch) {
+				$tagStart = $tagMatch[1];
+				$tagEnd = $tagStart + strlen($tagMatch[0]);
+				$tagRanges[] = [$tagStart, $tagEnd];
+			}
+		}
+		
 		// Process emails but skip those in HTML attributes
 		$pattern = '#([\s>])([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})#i';
 		$offset = 0;
@@ -254,49 +263,18 @@ class EmailObfuscator {
 			$pos = $matches[0][1];
 			$email = $matches[2][0] . '@' . $matches[3][0];
 			
-			// (Retina pattern check removed; attribute detection logic below suffices)
+			// Skip retina image patterns like @2x.png, @3x.jpg, etc.
+			if (preg_match('/^[^@]+@\d+x\./i', $email)) {
+				$offset = $pos + strlen($fullMatch);
+				continue;
+			}
 			
-			// Check if we're inside an HTML attribute value
-			$before = substr($ret, 0, $pos);
-			$lastTagStart = strrpos($before, '<');
-			$lastTagEnd = strrpos($before, '>');
-			
+			// Check if the email is inside any HTML tag
 			$shouldMakeClickable = true;
-			
-			// If we found a < after the last >, we're potentially inside a tag
-			if ($lastTagStart !== false && ($lastTagEnd === false || $lastTagStart > $lastTagEnd)) {
-				// We're inside a tag, check if we're inside quotes (attribute value)
-				$tagContent = substr($before, $lastTagStart);
-				
-				// Use regex to find all attribute values (single- or double-quoted, handling escaped quotes)
-				$attrValuePattern = '/
-					=                           # equals sign
-					\s*                         # optional whitespace
-					(?:
-						"((?:[^"\\\\]|\\\\.)*)"  # double-quoted value, allow escaped quotes
-						|
-						\'((?:[^\'\\\\]|\\\\.)*)\' # single-quoted value, allow escaped quotes
-					)
-				/x';
-
-				$inAttribute = false;
-				$relativePos = strlen($tagContent); // position of match relative to tag start
-
-				if (preg_match_all($attrValuePattern, $tagContent, $attrMatches, PREG_OFFSET_CAPTURE)) {
-					foreach ($attrMatches[0] as $idx => $match) {
-						$attrStart = $match[1];
-						$attrLen = strlen($match[0]);
-						$attrEnd = $attrStart + $attrLen;
-						// If the email match position (relative to tag start) is inside this attribute value
-						if ($relativePos >= $attrStart && $relativePos <= $attrEnd) {
-							$inAttribute = true;
-							break;
-						}
-					}
-				}
-
-				if ($inAttribute) {
+			foreach ($tagRanges as $range) {
+				if ($pos >= $range[0] && $pos < $range[1]) {
 					$shouldMakeClickable = false;
+					break;
 				}
 			}
 			
