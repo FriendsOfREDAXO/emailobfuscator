@@ -151,7 +151,15 @@ class EmailObfuscator {
     }
 
 	/**
-	 * Obfuscate emails but skip those within HTML attribute values
+	 * Obfuscate emails but skip those within HTML attribute values.
+	 *
+	 * This method uses a heuristic approach (e.g., quote counting) to determine whether an email address
+	 * is inside an HTML attribute value. As such, it has several limitations:
+	 * - It may not handle escaped quotes within attribute values (e.g., `\"`).
+	 * - It may not correctly handle mixed quote types (single and double quotes) within attributes.
+	 * - The algorithm assumes well-formed HTML and may not work correctly on malformed HTML.
+	 * - It is not a full HTML parser and may fail on complex or edge-case HTML constructs.
+	 *
 	 * @param string $content Content to process
 	 * @return string Processed content
 	 */
