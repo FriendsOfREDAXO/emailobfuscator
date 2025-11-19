@@ -263,11 +263,34 @@ class EmailObfuscator {
 				// We're inside a tag, check if we're inside quotes (attribute value)
 				$tagContent = substr($before, $lastTagStart);
 				
-				// Count quotes - if odd, we're inside an attribute value
-				$doubleQuotes = substr_count($tagContent, '"');
-				$singleQuotes = substr_count($tagContent, "'");
-				
-				if (($doubleQuotes % 2) == 1 || ($singleQuotes % 2) == 1) {
+				// Use regex to find all attribute values (single- or double-quoted, handling escaped quotes)
+				$attrValuePattern = '/
+					=                           # equals sign
+					\s*                         # optional whitespace
+					(?:
+						"((?:[^"\\\\]|\\\\.)*)"  # double-quoted value, allow escaped quotes
+						|
+						\'((?:[^\'\\\\]|\\\\.)*)\' # single-quoted value, allow escaped quotes
+					)
+				/x';
+
+				$inAttribute = false;
+				$relativePos = strlen($tagContent); // position of match relative to tag start
+
+				if (preg_match_all($attrValuePattern, $tagContent, $attrMatches, PREG_OFFSET_CAPTURE)) {
+					foreach ($attrMatches[0] as $idx => $match) {
+						$attrStart = $match[1];
+						$attrLen = strlen($match[0]);
+						$attrEnd = $attrStart + $attrLen;
+						// If the email match position (relative to tag start) is inside this attribute value
+						if ($relativePos >= $attrStart && $relativePos <= $attrEnd) {
+							$inAttribute = true;
+							break;
+						}
+					}
+				}
+
+				if ($inAttribute) {
 					$shouldMakeClickable = false;
 				}
 			}
