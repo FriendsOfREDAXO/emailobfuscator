@@ -168,41 +168,38 @@ class EmailObfuscator {
 		
 		$offset = 0;
 		$result = $content;
-		
-		while (preg_match($pattern, $result, $matches, PREG_OFFSET_CAPTURE, $offset)) {
-			$email = $matches[0][0];
-			$pos = $matches[0][1];
-			
-			// Check if we're inside an HTML attribute value
-			$before = substr($result, 0, $pos);
-			
-			// Find the last opening tag before this position
-			$lastTagStart = strrpos($before, '<');
-			$lastTagEnd = strrpos($before, '>');
-			
-			$shouldObfuscate = true;
-			
-			// If we found a < after the last >, we're potentially inside a tag
-			if ($lastTagStart !== false && ($lastTagEnd === false || $lastTagStart > $lastTagEnd)) {
-				// We're inside a tag, check if we're inside quotes (attribute value)
-				$tagContent = substr($before, $lastTagStart);
-				
-				// Count quotes to see if we're inside an attribute value
-				$doubleQuotes = substr_count($tagContent, '"');
-				$singleQuotes = substr_count($tagContent, "'");
-				
-				// If odd number of quotes, we're inside an attribute value
-				if (($doubleQuotes % 2) == 1 || ($singleQuotes % 2) == 1) {
-					$shouldObfuscate = false;
-				}
-			}
-			
-			if ($shouldObfuscate) {
-				// Check whitelist
-				if (($_SERVER['REQUEST_METHOD'] == 'POST' && self::in_array_r($email, $_POST)) || self::in_array_r($email, self::$whitelist)) {
-					$shouldObfuscate = false;
-				}
-			}
+        // Precompute all HTML tag ranges in the content
+        if (!isset($tagRanges)) {
+            $tagRanges = [];
+            if (preg_match_all('/<[^>]*>/', $result, $tagMatches, PREG_OFFSET_CAPTURE)) {
+                foreach ($tagMatches[0] as $tagMatch) {
+                    $tagStart = $tagMatch[1];
+                    $tagEnd = $tagStart + strlen($tagMatch[0]);
+                    $tagRanges[] = [$tagStart, $tagEnd];
+                }
+            }
+        }
+
+        while (preg_match($pattern, $result, $matches, PREG_OFFSET_CAPTURE, $offset)) {
+            $email = $matches[0][0];
+            $pos = $matches[0][1];
+
+            // Check if the email is inside any HTML tag
+            $shouldObfuscate = true;
+            foreach ($tagRanges as $range) {
+                if ($pos >= $range[0] && $pos < $range[1]) {
+                    $shouldObfuscate = false;
+                    break;
+                }
+            }
+
+            if ($shouldObfuscate) {
+                // Check whitelist
+                $fullMatch = array($email, $matches[1][0], $matches[2][0]);
+                if (($_SERVER['REQUEST_METHOD'] == 'POST' && self::in_array_r($email, $_POST)) || self::in_array_r($email, self::$whitelist)) {
+                    $shouldObfuscate = false;
+                }
+            }
 			
 			if ($shouldObfuscate) {
 				// Obfuscate the email
